@@ -33,11 +33,23 @@
       </button>
 
       <div id="nav-links" class="hidden w-full md:flex md:w-auto md:items-center md:gap-1 flex-col md:flex-row gap-1 pt-2 md:pt-0 border-t border-indigo-600/60 md:border-0">
-        <a href="/" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Início</a>
-        <a href="/produtos" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Produtos</a>
-        <a href="/categorias" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Categorias</a>
-        <a href="/fornecedores" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Fornecedores</a>
-        <a href="/movimentacoes" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Movimentações</a>
+        {{!-- "usuario" vem de res.locals (app.js): só existe depois do login --}}
+        {{#if usuario}}
+          <a href="/" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Início</a>
+          <a href="/produtos" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Produtos</a>
+          <a href="/categorias" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Categorias</a>
+          <a href="/fornecedores" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Fornecedores</a>
+          <a href="/movimentacoes" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Movimentações</a>
+          <form action="/logout" method="POST" class="mt-2 md:mt-0 md:ml-3">
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 bg-red-600 px-3 py-2 md:py-1.5 rounded-lg text-sm font-medium hover:bg-red-700 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+              Sair ({{usuario.nome}})
+            </button>
+          </form>
+        {{else}}
+          <a href="/login" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10 text-center">Entrar</a>
+          <a href="/registro" class="bg-white text-indigo-700 px-3.5 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-100 transition text-center">Criar conta</a>
+        {{/if}}
       </div>
     </div>
   </nav>

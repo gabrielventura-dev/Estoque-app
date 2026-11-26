@@ -20,7 +20,7 @@ npm run dev        # inicia com nodemon (reinicia ao salvar arquivos)
 # ou: npm start    # inicia com node
 ```
 
-Acesse **http://localhost:8081**.
+Acesse **http://localhost:8081** e clique em **Criar conta** no primeiro acesso.
 
 Variáveis de ambiente opcionais:
 
@@ -28,12 +28,13 @@ Variáveis de ambiente opcionais:
 |-------------|-----------------------------------------|
 | `PORT`      | `8081`                                  |
 | `MONGO_URL` | `mongodb://127.0.0.1:27017/estoque`     |
+| `SESSION_SECRET` | `controleestoque` (troque em produção) |
 
 ## Estrutura (MVC)
 
 ```
 app.js            configuração do Express, Handlebars, sessão, flash, middlewares, Mongoose e rotas
-models/           Model: schemas do Mongoose (Categoria, Fornecedor, Produto, Movimentacao)
+models/           Model: schemas do Mongoose (Categoria, Fornecedor, Produto, Movimentacao, Usuario)
 routes/           Controller: grupos de rotas com express.Router()
 views/            View: templates Handlebars (layout main + parcial _msg)
 public/           arquivos estáticos (css/style.css e js/script.js)
@@ -43,6 +44,7 @@ docs/             documentação (visão, modelagem, protótipos, roteiro da apr
 
 ## Funcionalidades
 
+- Login e criação de conta (senha guardada com hash `scrypt`); todas as páginas exigem login
 - Dashboard com totais, valor em estoque, produtos com estoque baixo e últimas movimentações
 - CRUD de categorias, fornecedores e produtos (com busca por nome/código)
 - Entrada e saída de estoque, com bloqueio de saída maior que o estoque disponível

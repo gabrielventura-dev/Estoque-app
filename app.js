@@ -18,6 +18,7 @@ require("./models/Categoria")
 require("./models/Fornecedor")
 require("./models/Produto")
 require("./models/Movimentacao")
+require("./models/Usuario")
 
 // Grupos de rotas: cada arquivo da pasta routes exporta um express.Router()
 const principal = require("./routes/principal")
@@ -25,12 +26,13 @@ const categorias = require("./routes/categorias")
 const fornecedores = require("./routes/fornecedores")
 const produtos = require("./routes/produtos")
 const movimentacoes = require("./routes/movimentacoes")
+const usuarios = require("./routes/usuarios")
 
 // Configurações
     // Sessão: guarda dados do usuário no servidor entre requisições.
     // O navegador recebe só um cookie com o id da sessão.
     app.use(session({
-        secret: "controleestoque",  // chave usada para assinar o cookie da sessão
+        secret: process.env.SESSION_SECRET || "controleestoque",  // chave usada para assinar o cookie da sessão
         resave: true,               // salva a sessão a cada requisição
         saveUninitialized: true     // cria a sessão mesmo que ainda esteja vazia
     }))
@@ -43,6 +45,8 @@ const movimentacoes = require("./routes/movimentacoes")
     app.use(function (req, res, next) {
         res.locals.success_msg = req.flash("success_msg")
         res.locals.error_msg = req.flash("error_msg")
+        // Usuário logado (ou undefined): usado no menu do layout para mostrar "Sair"
+        res.locals.usuario = req.session.usuario
         next() // passa para o próximo middleware/rota
     })
 
@@ -97,6 +101,17 @@ const movimentacoes = require("./routes/movimentacoes")
 
 // Rotas: cada grupo recebe um prefixo
 // (ex.: router.get("/nova") em categorias.js vira GET /categorias/nova)
+// Login, criação de conta e logout: ficam ANTES da proteção, pois são abertas a todos
+app.use("/", usuarios)
+
+// Proteção: daqui para baixo, só entra quem fez login.
+// Sem usuário na sessão, manda para a tela de login
+app.use(function (req, res, next) {
+    if (req.session.usuario) return next()
+    req.flash("error_msg", "Faça login para acessar o sistema")
+    res.redirect("/login")
+})
+
 app.use("/", principal)
 app.use("/categorias", categorias)
 app.use("/fornecedores", fornecedores)

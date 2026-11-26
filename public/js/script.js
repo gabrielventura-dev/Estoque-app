@@ -26,6 +26,18 @@ document.querySelectorAll("[data-quantidade]").forEach(function (elemento) {
     }
 })
 
+// 3) Botão de olho nos campos de senha: alterna entre mostrar e esconder o texto
+// data-mostrar-senha="id" diz qual campo o botão controla
+document.querySelectorAll("[data-mostrar-senha]").forEach(function (botao) {
+    let campo = document.getElementById(botao.dataset.mostrarSenha)
+    botao.addEventListener("click", function () {
+        let mostrando = campo.type == "text"
+        campo.type = mostrando ? "password" : "text"
+        botao.setAttribute("aria-pressed", String(!mostrando))
+        botao.setAttribute("aria-label", mostrando ? "Mostrar senha" : "Ocultar senha")
+    })
+})
+
 // 4) Abre e fecha o menu no celular (botão "hambúrguer" do layout main.handlebars)
 let botaoMenu = document.getElementById("menu-toggle")
 let menu = document.getElementById("nav-links")
@@ -38,7 +50,7 @@ if (botaoMenu && menu) {
     })
 }
 
-// 3) Formata o preço ao sair do campo (evento "blur"): "10,5" -> "10.50"
+// 5) Formata o preço ao sair do campo (evento "blur"): "10,5" -> "10.50"
 document.querySelectorAll(".preco").forEach(function (campo) {
     campo.addEventListener("blur", function () {
         let valor = Number(campo.value.replace(",", "."))
