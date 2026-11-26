@@ -1,0 +1,46 @@
+{{!-- Detalhe do produto: dados com populate + histórico de movimentações deste produto --}}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>{{produto.nome}}</h2>
+    <div>
+        {{!-- Passa o id na URL para o formulário já vir com este produto selecionado --}}
+        <a href="/movimentacoes/nova?produto={{produto._id}}" class="btn btn-success">Registrar movimentação</a>
+        <a href="/produtos/editar/{{produto._id}}" class="btn btn-primary">Editar</a>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Código:</strong> {{produto.codigo}}</p>
+        <p><strong>Descrição:</strong> {{produto.descricao}}</p>
+        <p><strong>Categoria:</strong> {{produto.categoria.nome}}</p>
+        <p><strong>Fornecedor:</strong> {{produto.fornecedor.nome}}</p>
+        <p><strong>Preço:</strong> {{dinheiro produto.preco}}</p>
+        {{!-- data-* lidos pelo script.js para mostrar o selo de estoque baixo --}}
+        <p data-quantidade="{{produto.quantidade}}" data-minimo="{{produto.estoqueMinimo}}">
+            <strong>Estoque:</strong> {{produto.quantidade}} (mínimo: {{produto.estoqueMinimo}})
+            <span class="situacao"></span>
+        </p>
+    </div>
+</div>
+
+<h4>Histórico de movimentações</h4>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Data</th><th>Tipo</th><th>Quantidade</th><th>Observação</th></tr>
+        </thead>
+        <tbody>
+            {{#each movimentacoes}}
+                <tr>
+                    <td>{{data date}}</td>
+                    <td>{{#if (igual tipo "entrada")}}<span class="badge bg-success">Entrada</span>{{else}}<span class="badge bg-warning text-dark">Saída</span>{{/if}}</td>
+                    <td>{{quantidade}}</td>
+                    <td>{{observacao}}</td>
+                </tr>
+            {{else}}
+                <tr><td colspan="4" class="text-muted">Nenhuma movimentação para este produto.</td></tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+<a href="/produtos" class="btn btn-secondary">Voltar</a>

@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Fornecedores</h2>
+    <a href="/fornecedores/novo" class="btn btn-success">Novo fornecedor</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr><th>Nome</th><th>CNPJ</th><th>Telefone</th><th>E-mail</th><th></th></tr>
+        </thead>
+        <tbody>
+            {{!-- Uma linha da tabela para cada fornecedor --}}
+            {{#each fornecedores}}
+                <tr>
+                    <td>{{nome}}</td>
+                    <td>{{cnpj}}</td>
+                    <td>{{telefone}}</td>
+                    <td>{{email}}</td>
+                    <td class="text-end text-nowrap">
+                        <a href="/fornecedores/editar/{{_id}}" class="btn btn-primary btn-sm">Editar</a>
+                        {{!-- form-deletar: o script.js pede confirmação antes de enviar --}}
+                        <form action="/fornecedores/deletar" method="POST" class="d-inline form-deletar">
+                            <input type="hidden" name="id" value="{{_id}}">
+                            <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+            {{else}}
+                <tr><td colspan="5" class="text-muted">Nenhum fornecedor cadastrado.</td></tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,22 @@
+{{!-- Erros de validação enviados pela rota --}}
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{/each}}
+
+<h2>Novo fornecedor</h2>
+<div class="card">
+    <div class="card-body">
+        <form action="/fornecedores/novo" method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" class="form-control" value="{{fornecedor.nome}}">
+            <label for="cnpj" class="mt-2">CNPJ:</label>
+            <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" class="form-control" value="{{fornecedor.cnpj}}">
+            <label for="telefone" class="mt-2">Telefone:</label>
+            <input type="text" id="telefone" name="telefone" placeholder="(83) 99999-9999" class="form-control" value="{{fornecedor.telefone}}">
+            <label for="email" class="mt-2">E-mail:</label>
+            <input type="text" id="email" name="email" placeholder="contato@empresa.com" class="form-control" value="{{fornecedor.email}}">
+            <button type="submit" class="btn btn-success mt-3">Cadastrar fornecedor</button>
+            <a href="/fornecedores" class="btn btn-secondary mt-3">Cancelar</a>
+        </form>
+    </div>
+</div>

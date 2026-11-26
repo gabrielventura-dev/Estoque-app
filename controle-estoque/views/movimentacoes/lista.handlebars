@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Histórico de movimentações</h2>
+    <a href="/movimentacoes/nova" class="btn btn-success">Nova movimentação</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Data</th><th>Produto</th><th>Tipo</th><th>Quantidade</th><th>Observação</th></tr>
+        </thead>
+        <tbody>
+            {{!-- Mais recentes primeiro (sort na rota). produto.nome vem do populate --}}
+            {{#each movimentacoes}}
+                <tr>
+                    <td>{{data date}}</td>
+                    <td>{{#if produto}}<a href="/produtos/{{produto._id}}">{{produto.nome}}</a>{{else}}(produto removido){{/if}}</td>
+                    {{!-- Selo verde para entrada e amarelo para saída --}}
+                    <td>{{#if (igual tipo "entrada")}}<span class="badge bg-success">Entrada</span>{{else}}<span class="badge bg-warning text-dark">Saída</span>{{/if}}</td>
+                    <td>{{quantidade}}</td>
+                    <td>{{observacao}}</td>
+                </tr>
+            {{else}}
+                <tr><td colspan="5" class="text-muted">Nenhuma movimentação registrada.</td></tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
