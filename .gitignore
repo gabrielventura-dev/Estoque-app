@@ -1,32 +1,22 @@
-# Dependências instaladas (rodar npm install para gerar)
+# Dependências (recriadas com "npm install")
 node_modules/
 
-# Variáveis de ambiente (senhas, chaves de API)
-.env
-.env.*
+# Documentação do trabalho (entregue separadamente)
+docs/
 
-# Banco de dados local
-*.sqlite
-*.sqlite3
-*.db
-
-# Logs gerados pelo Node
+# Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Arquivos de sistema do Windows
+# Variáveis de ambiente (senhas, chaves de API)
+.env
+.env.*
+
+# Arquivos do sistema e do editor
+.DS_Store
 Thumbs.db
 desktop.ini
-
-# Arquivos de sistema do Mac
-.DS_Store
-
-# Pasta gerada por editores
-.vscode/settings.json
+.vscode/
 .idea/
-
-# Build/cache (caso venha a usar)
-dist/
-.cache/

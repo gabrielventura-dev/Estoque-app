@@ -3,7 +3,7 @@
 Projeto da disciplina **Back-end Frameworks** (Prof. Allan Vilar, UNINASSAU Campina Grande).
 Aplicação web para cadastrar categorias, fornecedores e produtos e registrar entradas e saídas de estoque.
 
-**Tecnologias:** Node.js, Express, express-handlebars, Bootstrap 5, MongoDB + Mongoose, body-parser, express-session, connect-flash e nodemon.
+**Tecnologias:** Node.js, Express, express-handlebars, Tailwind CSS, MongoDB + Mongoose, body-parser, express-session, connect-flash e nodemon.
 
 ## Pré-requisitos
 
@@ -14,7 +14,6 @@ Aplicação web para cadastrar categorias, fornecedores e produtos e registrar e
 ## Como rodar
 
 ```bash
-cd controle-estoque
 npm install        # instala as dependências
 npm run seed       # (opcional) apaga o banco "estoque" e insere dados de exemplo
 npm run dev        # inicia com nodemon (reinicia ao salvar arquivos)
