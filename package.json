@@ -1,0 +1,11 @@
+{
+  "name": "controle-estoque-front",
+  "version": "1.0.0",
+  "description": "Front-end Controle de Estoque - Uninassau",
+  "private": true,
+  "dependencies": {
+    "express": "^5.3.0",
+    "express-handlebars": "^9.0.6",
+    "express-session": "^1.19.0"
+  }
+}

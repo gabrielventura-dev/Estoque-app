@@ -1,0 +1,85 @@
+/* Evita animações bruscas para quem prefere movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Destaque ao navegar pelo teclado */
+*:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 2px;
+}
+
+a, button, [role="button"] {
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(79, 70, 229, 0.2);
+}
+
+main,
+h1,
+h2,
+h3 {
+  scroll-margin-top: 80px;
+}
+
+/* Mantém fonte 16px no mobile para o navegador não dar zoom ao digitar */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  input.text-sm,
+  select.text-sm {
+    font-size: 0.875rem;
+  }
+}
+
+/* Efeito leve ao passar o mouse nas linhas das tabelas */
+tbody tr {
+  transition: background-color 150ms ease;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Cores das mensagens de aviso (sucesso, erro, alerta e info) */
+.flash-alert {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border-color: #bfdbfe;
+}
+
+.flash-alert.flash-success,
+.flash-alert.flash-green {
+  background-color: #ecfdf5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+.flash-alert.flash-error,
+.flash-alert.flash-danger,
+.flash-alert.flash-red {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border-color: #fecaca;
+}
+
+.flash-alert.flash-warning,
+.flash-alert.flash-yellow {
+  background-color: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.flash-alert.flash-info,
+.flash-alert.flash-blue {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border-color: #bfdbfe;
+}

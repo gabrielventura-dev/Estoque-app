@@ -1,0 +1,124 @@
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl font-bold text-gray-900">Movimentações de Estoque</h1>
+    <p class="text-sm text-gray-500">Registre novas entradas ou saídas e acompanhe o histórico.</p>
+  </div>
+</div>
+
+<!-- Formulário para registrar entrada ou saída de produto -->
+<div class="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-gray-200 mb-6">
+  <h2 class="text-base font-semibold text-gray-900 mb-4">Registrar movimentação</h2>
+  {{#if produtos.length}}
+    <form method="POST" action="/movimentacoes/cadastrar" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+      <div>
+        <label for="produtoId" class="block text-sm font-medium text-gray-700 mb-1">Produto</label>
+        <select id="produtoId" name="produtoId" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+          {{#each produtos}}
+          <option value="{{id}}">{{nome}} (Estoque: {{quantidade}})</option>
+          {{/each}}
+        </select>
+      </div>
+      <div>
+        <label for="tipo" class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
+        <select id="tipo" name="tipo" required class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+          <option value="entrada">Entrada (+)</option>
+          <option value="saida">Saída (-)</option>
+        </select>
+      </div>
+      <div>
+        <label for="quantidade-mov" class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+        <input id="quantidade-mov" type="number" name="quantidade" min="1" required inputmode="numeric" placeholder="1" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+      </div>
+      <div>
+        <button type="submit" class="w-full bg-indigo-700 text-white px-4 py-2 rounded-lg hover:bg-indigo-800 transition text-sm font-semibold">Registrar</button>
+      </div>
+    </form>
+  {{else}}
+    <p class="text-sm text-gray-600">
+      Nenhum produto disponível para movimentação.
+      <a href="/produtos/cadastrar" class="text-indigo-700 font-medium underline hover:text-indigo-900">Cadastre um produto primeiro</a>.
+    </p>
+  {{/if}}
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  <div class="px-5 py-4 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+    <h2 class="font-semibold text-gray-900">Histórico de movimentações</h2>
+    <div class="flex items-center gap-1.5" role="group" aria-label="Filtrar movimentações por tipo">
+      <button type="button" data-filter="todos" class="filtro-mov px-3 py-1 rounded-lg text-xs font-semibold bg-indigo-700 text-white transition">Todas</button>
+      <button type="button" data-filter="entrada" class="filtro-mov px-3 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">Entradas</button>
+      <button type="button" data-filter="saida" class="filtro-mov px-3 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">Saídas</button>
+    </div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-gray-50 border-b border-gray-200">
+        <tr>
+          <th scope="col" class="px-5 py-3 font-medium text-gray-600">Produto</th>
+          <th scope="col" class="px-5 py-3 font-medium text-gray-600">Tipo</th>
+          <th scope="col" class="px-5 py-3 font-medium text-gray-600">Qtd.</th>
+          <th scope="col" class="px-5 py-3 font-medium text-gray-600">Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#if movimentacoes.length}}
+          {{#each movimentacoes}}
+          <tr class="border-b last:border-b-0" data-mov-tipo="{{tipo}}">
+            <td class="px-5 py-3 font-medium text-gray-900">{{produto.nome}}</td>
+            <td class="px-5 py-3">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold {{#if (eq tipo 'entrada')}}bg-green-100 text-green-800{{else}}bg-blue-100 text-blue-800{{/if}}">
+                {{#if (eq tipo 'entrada')}}Entrada{{else}}Saída{{/if}}
+              </span>
+            </td>
+            <td class="px-5 py-3 {{#if (eq tipo 'entrada')}}text-green-700{{else}}text-blue-700{{/if}} font-semibold tabular-nums">
+              {{#if (eq tipo 'entrada')}}+{{else}}-{{/if}}{{quantidade}}
+            </td>
+            <td class="px-5 py-3 text-gray-500 tabular-nums">{{data}}</td>
+          </tr>
+          {{/each}}
+          <tr id="sem-mov-filtro" class="hidden">
+            <td class="px-5 py-10 text-center text-gray-500" colspan="4">Nenhuma movimentação encontrada para esse filtro.</td>
+          </tr>
+        {{else}}
+          <tr>
+            <td class="px-5 py-10 text-center text-gray-500" colspan="4">Nenhuma movimentação registrada.</td>
+          </tr>
+        {{/if}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Filtra as linhas do histórico entre Todas, Entradas e Saídas
+  (function () {
+    const botoes = Array.from(document.querySelectorAll('.filtro-mov'));
+    const rows = Array.from(document.querySelectorAll('tbody tr[data-mov-tipo]'));
+    const emptyRow = document.getElementById('sem-mov-filtro');
+    if (!botoes.length || !rows.length) return;
+
+    botoes.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const filtro = btn.getAttribute('data-filter');
+        botoes.forEach(function (b) {
+          const ativo = b === btn;
+          b.className = ativo
+            ? 'filtro-mov px-3 py-1 rounded-lg text-xs font-semibold bg-indigo-700 text-white transition'
+            : 'filtro-mov px-3 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition';
+        });
+
+        let visiveis = 0;
+        rows.forEach(function (row) {
+          const tipo = row.getAttribute('data-mov-tipo');
+          const match = filtro === 'todos' || tipo === filtro;
+          row.style.display = match ? '' : 'none';
+          if (match) visiveis += 1;
+        });
+
+        if (emptyRow) {
+          emptyRow.classList.toggle('hidden', visiveis > 0);
+        }
+      });
+    });
+  })();
+</script>

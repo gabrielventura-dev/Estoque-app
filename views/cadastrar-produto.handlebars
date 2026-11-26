@@ -1,0 +1,58 @@
+<div class="max-w-lg mx-auto">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Cadastrar Produto</h1>
+    <p class="text-sm text-gray-500 mt-1">Preencha os dados para adicionar um novo item ao estoque.</p>
+  </div>
+
+  <!-- Aviso caso ainda não exista nenhuma categoria cadastrada -->
+  {{#unless categorias.length}}
+    <div class="mb-4 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-sm">
+      Nenhuma categoria cadastrada ainda.
+      <a href="/categorias" class="font-semibold underline hover:text-amber-700">Cadastre uma categoria primeiro</a>
+      para vincular ao produto.
+    </div>
+  {{/unless}}
+
+  <form method="POST" action="/produtos/cadastrar" class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome do produto</label>
+        <input id="nome" type="text" name="nome" required autocomplete="off" placeholder="Ex: Arroz 5kg" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+      </div>
+      <div>
+        <label for="categoriaId" class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
+        <select id="categoriaId" name="categoriaId" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white text-gray-900">
+          {{#if categorias.length}}
+            {{#each categorias}}
+            <option value="{{id}}">{{nome}}</option>
+            {{/each}}
+          {{else}}
+            <option value="" disabled selected>Sem categorias disponíveis</option>
+          {{/if}}
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="preco" class="block text-sm font-medium text-gray-700 mb-1">Preço (R$)</label>
+        <input id="preco" type="number" step="0.01" min="0" name="preco" required inputmode="decimal" placeholder="0.00" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+      </div>
+      <div>
+        <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade inicial</label>
+        <input id="quantidade" type="number" name="quantidade" required min="0" inputmode="numeric" placeholder="0" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+      </div>
+    </div>
+
+    <div>
+      <label for="estoqueMinimo" class="block text-sm font-medium text-gray-700 mb-1">Estoque mínimo</label>
+      <input id="estoqueMinimo" type="number" name="estoqueMinimo" value="5" min="0" inputmode="numeric" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+      <p class="text-xs text-gray-500 mt-1">Alertas aparecem quando a quantidade ficar abaixo desse valor.</p>
+    </div>
+
+    <div class="pt-3 flex flex-col sm:flex-row gap-3">
+      <button type="submit" class="flex-1 bg-indigo-700 text-white py-2.5 px-4 rounded-lg hover:bg-indigo-800 transition font-semibold">Salvar Produto</button>
+      <a href="/produtos" class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition text-sm font-medium">Voltar à lista</a>
+    </div>
+  </form>
+</div>
