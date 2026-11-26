@@ -1,2 +1,18 @@
+# Dependências (recriadas com "npm install")
 node_modules/
+
+# Documentação do trabalho (entregue separadamente)
+docs/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variáveis de ambiente
 .env
+
+# Arquivos do sistema e do editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
