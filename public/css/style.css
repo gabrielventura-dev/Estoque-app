@@ -1,3 +1,5 @@
+/* Estilos próprios do sistema (complementam o Tailwind) */
+
 /* Evita animações bruscas para quem prefere movimento reduzido */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -18,17 +20,12 @@ a, button, [role="button"] {
   -webkit-tap-highlight-color: rgba(79, 70, 229, 0.2);
 }
 
-main,
-h1,
-h2,
-h3 {
+main, h1, h2, h3 {
   scroll-margin-top: 80px;
 }
 
 /* Mantém fonte 16px no mobile para o navegador não dar zoom ao digitar */
-input,
-select,
-textarea {
+input, select, textarea {
   font-size: 16px;
 }
 
@@ -48,38 +45,8 @@ tbody tr:hover {
   background-color: #f9fafb;
 }
 
-/* Cores das mensagens de aviso (sucesso, erro, alerta e info) */
-.flash-alert {
-  background-color: #eff6ff;
-  color: #1e40af;
-  border-color: #bfdbfe;
-}
-
-.flash-alert.flash-success,
-.flash-alert.flash-green {
-  background-color: #ecfdf5;
-  color: #065f46;
-  border-color: #a7f3d0;
-}
-
-.flash-alert.flash-error,
-.flash-alert.flash-danger,
-.flash-alert.flash-red {
+/* Linha de produto com estoque baixo (classe adicionada pelo script.js) */
+tr.estoque-baixo,
+tr.estoque-baixo:hover {
   background-color: #fef2f2;
-  color: #991b1b;
-  border-color: #fecaca;
-}
-
-.flash-alert.flash-warning,
-.flash-alert.flash-yellow {
-  background-color: #fffbeb;
-  color: #92400e;
-  border-color: #fde68a;
-}
-
-.flash-alert.flash-info,
-.flash-alert.flash-blue {
-  background-color: #eff6ff;
-  color: #1e40af;
-  border-color: #bfdbfe;
 }

@@ -3,28 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{#if titulo}}{{titulo}} · {{/if}}Estoque App</title>
+  <title>Controle de Estoque</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234f46e5'/><path stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round' fill='none' d='M7 12l9-5 9 5M7 12l9 5 9-5M7 12v8l9 4M25 12v8l-9 4M16 17v8'/></svg>">
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CSS próprio (pasta public) -->
   <link rel="stylesheet" href="/css/style.css">
   <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:border focus:border-indigo-700 focus:rounded focus:text-indigo-700">Pular para o conteúdo principal</a>
 
-  <!-- Barra de navegação fixa no topo -->
+  {{!-- Barra de navegação fixa no topo. Em telas pequenas vira o botão "hambúrguer" --}}
   <nav class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50" aria-label="Navegação principal">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex flex-wrap justify-between items-center gap-3">
       <a href="/" class="text-xl font-bold flex items-center gap-2 tracking-tight" aria-label="Página inicial">
-        <!-- Ícone do logo com caixas de estoque -->
         <div class="bg-white/15 rounded-xl p-1.5 shrink-0" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
         </div>
-        <span>Estoque App</span>
+        <span>Controle de Estoque</span>
       </a>
 
       <button id="menu-toggle" type="button" class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-indigo-100 hover:bg-white/10 transition" aria-controls="nav-links" aria-expanded="false" aria-label="Abrir menu de navegação">
@@ -32,32 +33,31 @@
       </button>
 
       <div id="nav-links" class="hidden w-full md:flex md:w-auto md:items-center md:gap-1 flex-col md:flex-row gap-1 pt-2 md:pt-0 border-t border-indigo-600/60 md:border-0">
+        {{!-- "usuario" vem de res.locals (app.js): só existe depois do login --}}
         {{#if usuario}}
-          <a href="/painel" {{#if (startsWith currentPath '/painel')}}aria-current="page"{{/if}} class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition {{#if (startsWith currentPath '/painel')}}bg-white/20 font-semibold{{else}}hover:bg-white/10{{/if}}">Painel</a>
-          <a href="/produtos" {{#if (startsWith currentPath '/produtos')}}aria-current="page"{{/if}} class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition {{#if (startsWith currentPath '/produtos')}}bg-white/20 font-semibold{{else}}hover:bg-white/10{{/if}}">Produtos</a>
-          <a href="/categorias" {{#if (startsWith currentPath '/categorias')}}aria-current="page"{{/if}} class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition {{#if (startsWith currentPath '/categorias')}}bg-white/20 font-semibold{{else}}hover:bg-white/10{{/if}}">Categorias</a>
-          <a href="/movimentacoes" {{#if (startsWith currentPath '/movimentacoes')}}aria-current="page"{{/if}} class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition {{#if (startsWith currentPath '/movimentacoes')}}bg-white/20 font-semibold{{else}}hover:bg-white/10{{/if}}">Movimentações</a>
-          <a href="/logout" class="mt-2 md:mt-0 md:ml-3 inline-flex items-center justify-center gap-1.5 bg-red-600 px-3 py-2 md:py-1.5 rounded-lg text-sm font-medium hover:bg-red-700 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-            Sair ({{usuario.nome}})
-          </a>
+          <a href="/" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Início</a>
+          <a href="/produtos" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Produtos</a>
+          <a href="/categorias" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Categorias</a>
+          <a href="/fornecedores" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Fornecedores</a>
+          <a href="/movimentacoes" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10">Movimentações</a>
+          <form action="/logout" method="POST" class="mt-2 md:mt-0 md:ml-3">
+            <button type="submit" class="w-full inline-flex items-center justify-center gap-1.5 bg-red-600 px-3 py-2 md:py-1.5 rounded-lg text-sm font-medium hover:bg-red-700 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+              Sair ({{usuario.nome}})
+            </button>
+          </form>
         {{else}}
-          <a href="/login" {{#if (startsWith currentPath '/login')}}aria-current="page"{{/if}} class="bg-white text-indigo-700 px-3.5 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-100 transition text-center">Login</a>
+          <a href="/login" class="px-3 py-2 md:py-1.5 rounded-lg text-sm transition hover:bg-white/10 text-center">Entrar</a>
+          <a href="/registro" class="bg-white text-indigo-700 px-3.5 py-1.5 rounded-lg text-sm font-semibold hover:bg-gray-100 transition text-center">Criar conta</a>
         {{/if}}
       </div>
     </div>
   </nav>
 
   <main id="main-content" class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-6" tabindex="-1">
-    <!-- Mensagens de retorno (sucesso ou erro vindos do servidor) -->
-    {{#if msg}}
-      <div id="flash-msg" class="flash-alert {{#if msgTipo}}flash-{{msgTipo}}{{/if}} mb-6 px-4 py-3.5 rounded-xl border flex items-center justify-between gap-3 text-sm font-medium shadow-sm" role="alert">
-        <span>{{msg}}</span>
-        <button type="button" onclick="document.getElementById('flash-msg')?.remove()" class="p-1 rounded-md opacity-70 hover:opacity-100 transition" aria-label="Fechar mensagem">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-        </button>
-      </div>
-    {{/if}}
+    {{!-- {{>_msg}} inclui a parcial views/partials/_msg.handlebars (mensagens flash) --}}
+    {{>_msg}}
+    {{!-- {{{body}}} é onde entra o conteúdo de cada view (3 chaves = HTML sem escapar) --}}
     {{{body}}}
   </main>
 
@@ -67,19 +67,7 @@
     </div>
   </footer>
 
-  <script>
-    // Abre e fecha o menu no celular
-    (function () {
-      const btn = document.getElementById('menu-toggle');
-      const nav = document.getElementById('nav-links');
-      if (!btn || !nav) return;
-      btn.addEventListener('click', function () {
-        const isHidden = nav.classList.contains('hidden');
-        nav.classList.toggle('hidden');
-        nav.classList.toggle('flex');
-        btn.setAttribute('aria-expanded', String(isHidden));
-      });
-    })();
-  </script>
+  <!-- JavaScript próprio do front-end (menu do celular, confirmações, etc.) -->
+  <script src="/js/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,38 @@
+<div class="max-w-lg mx-auto">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Editar fornecedor</h1>
+    <p class="text-sm text-gray-500 mt-1">Altere os dados e salve.</p>
+  </div>
+
+  {{!-- Erros de validação enviados pela rota --}}
+  {{#each erros}}
+    <div class="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm" role="alert">{{texto}}</div>
+  {{/each}}
+
+  <form action="/fornecedores/editar" method="POST" class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 space-y-4">
+    {{!-- _id escondido: a rota usa req.body.id --}}
+    <input type="hidden" name="id" value="{{fornecedor._id}}">
+    <div>
+      <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+      <input type="text" id="nome" name="nome" value="{{fornecedor.nome}}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+    </div>
+    <div>
+      <label for="cnpj" class="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
+      <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" value="{{fornecedor.cnpj}}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="telefone" class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+        <input type="text" id="telefone" name="telefone" placeholder="(83) 99999-9999" value="{{fornecedor.telefone}}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+      </div>
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
+        <input type="text" id="email" name="email" placeholder="contato@empresa.com" value="{{fornecedor.email}}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+      </div>
+    </div>
+    <div class="pt-3 flex flex-col sm:flex-row gap-3">
+      <button type="submit" class="flex-1 bg-indigo-700 text-white py-2.5 px-4 rounded-lg hover:bg-indigo-800 transition font-semibold">Salvar alterações</button>
+      <a href="/fornecedores" class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition text-sm font-medium">Cancelar</a>
+    </div>
+  </form>
+</div>

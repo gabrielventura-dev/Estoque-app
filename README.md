@@ -1,81 +1,51 @@
-# Estoque App
+# Sistema de Controle de Estoque
 
-Sistema web de controle de estoque desenvolvido como projeto da disciplina de **Back-End Frameworks** — Uninassau.
+Projeto da disciplina **Back-end Frameworks** (Prof. Allan Vilar, UNINASSAU Campina Grande).
+Aplicação web para cadastrar categorias, fornecedores e produtos e registrar entradas e saídas de estoque.
 
----
+**Tecnologias:** Node.js, Express, express-handlebars, Tailwind CSS, MongoDB + Mongoose, body-parser, express-session, connect-flash e nodemon.
 
-## Sobre o projeto
+## Pré-requisitos
 
-O sistema permite gerenciar produtos, categorias e movimentações de estoque de forma simples e intuitiva. Conta com um painel de controle que exibe alertas de produtos com estoque baixo e o valor total em estoque.
+- [Node.js](https://nodejs.org) 18 ou superior
+- [MongoDB](https://www.mongodb.com/try/download/community) rodando em `127.0.0.1:27017`
+  - Alternativa com Docker: `docker run -d -p 27017:27017 --name mongo mongo`
+
+## Como rodar
+
+```bash
+npm install        # instala as dependências
+npm run seed       # (opcional) apaga o banco "estoque" e insere dados de exemplo
+npm run dev        # inicia com nodemon (reinicia ao salvar arquivos)
+# ou: npm start    # inicia com node
+```
+
+Acesse **http://localhost:8081** e clique em **Criar conta** no primeiro acesso.
+
+Variáveis de ambiente opcionais:
+
+| Variável    | Padrão                                  |
+|-------------|-----------------------------------------|
+| `PORT`      | `8081`                                  |
+| `MONGO_URL` | `mongodb://127.0.0.1:27017/estoque`     |
+| `SESSION_SECRET` | `controleestoque` (troque em produção) |
+
+## Estrutura (MVC)
+
+```
+app.js            configuração do Express, Handlebars, sessão, flash, middlewares, Mongoose e rotas
+models/           Model: schemas do Mongoose (Categoria, Fornecedor, Produto, Movimentacao, Usuario)
+routes/           Controller: grupos de rotas com express.Router()
+views/            View: templates Handlebars (layout main + parcial _msg)
+public/           arquivos estáticos (css/style.css e js/script.js)
+seed.js           dados de exemplo
+docs/             documentação (visão, modelagem, protótipos, roteiro da apresentação)
+```
 
 ## Funcionalidades
 
-- **Login** — autenticação de usuário
-- **Painel** — visão geral com total de produtos, estoque baixo e valor total
-- **Produtos** — listagem, busca em tempo real e exclusão de produtos
-- **Cadastrar Produto** — formulário para adicionar novos itens ao estoque
-- **Categorias** — cadastro e listagem de categorias
-- **Movimentações** — registro de entradas e saídas com histórico filtrável
-
-## Tecnologias utilizadas
-
-| Tecnologia | Uso |
-|---|---|
-| Node.js | Plataforma de execução |
-| Express | Framework back-end |
-| Handlebars | Template engine (views) |
-| Tailwind CSS | Estilização das interfaces |
-| Poppins (Google Fonts) | Tipografia |
-| Express Session | Controle de sessão do usuário |
-
-## Como rodar o projeto
-
-**Pré-requisitos:** Node.js instalado
-
-```bash
-# Clone o repositório
-git clone https://github.com/gabrielventura-dev/Estoque-app.git
-
-# Entre na pasta
-cd Estoque-app
-
-# Instale as dependências
-npm install
-
-# Inicie o servidor
-node app.js
-```
-
-Acesse em: `http://localhost:3000`
-
-## Estrutura de pastas
-
-```
-Estoque-app/
-├── public/
-│   └── css/
-│       └── style.css        # Estilos globais
-├── views/
-│   ├── layouts/
-│   │   └── main.handlebars  # Layout principal (navbar, footer)
-│   ├── login.handlebars
-│   ├── painel.handlebars
-│   ├── produtos.handlebars
-│   ├── cadastrar-produto.handlebars
-│   ├── categorias.handlebars
-│   └── movimentacoes.handlebars
-├── .gitignore
-├── package.json
-└── README.md
-```
-
-## Equipe
-
-| Nome | Responsabilidade |
-|---|---|
-| Gabriel Ventura | Front-end (views, CSS, layout) |
-| Gabriel Rodrigues | Back-end (rotas, banco de dados) |
-
----
-
-Projeto acadêmico — Uninassau · 2026
+- Login e criação de conta (senha guardada com hash `scrypt`); todas as páginas exigem login
+- Dashboard com totais, valor em estoque, produtos com estoque baixo e últimas movimentações
+- CRUD de categorias, fornecedores e produtos (com busca por nome/código)
+- Entrada e saída de estoque, com bloqueio de saída maior que o estoque disponível
+- Não deixa apagar categoria/fornecedor que tenha produtos vinculados

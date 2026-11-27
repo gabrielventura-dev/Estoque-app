@@ -1,0 +1,54 @@
+<div class="max-w-lg mx-auto">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Nova movimentação</h1>
+    <p class="text-sm text-gray-500 mt-1">Registre uma entrada ou saída de produto.</p>
+  </div>
+
+  {{!-- Erros de validação e de regra de negócio (ex.: estoque insuficiente) --}}
+  {{#each erros}}
+    <div class="mb-4 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-sm" role="alert">{{texto}}</div>
+  {{/each}}
+
+  <form action="/movimentacoes/nova" method="POST" class="bg-white p-6 sm:p-8 rounded-xl shadow-sm border border-gray-200 space-y-4">
+    <div>
+      <label for="produto" class="block text-sm font-medium text-gray-700 mb-1">Produto</label>
+      {{!-- Mostra o estoque atual de cada produto para ajudar na saída --}}
+      <select id="produto" name="produto" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white text-gray-900">
+        <option value="0">Selecione...</option>
+        {{#each produtos}}
+          <option value="{{_id}}" {{#if (igual _id ../movimentacao.produto)}}selected{{/if}}>{{nome}} ({{codigo}}) - estoque: {{quantidade}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{!-- Radio buttons: só um tipo pode ser escolhido; o valor chega em req.body.tipo --}}
+    <fieldset>
+      <legend class="block text-sm font-medium text-gray-700 mb-1">Tipo</legend>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <label for="entrada" class="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 has-[:checked]:border-green-500 has-[:checked]:bg-green-50">
+          <input type="radio" name="tipo" id="entrada" value="entrada" class="accent-green-600" {{#if (igual movimentacao.tipo "entrada")}}checked{{/if}}>
+          Entrada (soma ao estoque)
+        </label>
+        <label for="saida" class="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 text-sm cursor-pointer hover:bg-gray-50 has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50">
+          <input type="radio" name="tipo" id="saida" value="saida" class="accent-blue-600" {{#if (igual movimentacao.tipo "saida")}}checked{{/if}}>
+          Saída (subtrai do estoque)
+        </label>
+      </div>
+    </fieldset>
+
+    <div>
+      <label for="quantidade" class="block text-sm font-medium text-gray-700 mb-1">Quantidade</label>
+      <input type="number" id="quantidade" name="quantidade" min="1" inputmode="numeric" value="{{movimentacao.quantidade}}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+    </div>
+
+    <div>
+      <label for="observacao" class="block text-sm font-medium text-gray-700 mb-1">Observação</label>
+      <input type="text" id="observacao" name="observacao" placeholder="Ex.: venda balcão, compra NF 123" value="{{movimentacao.observacao}}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
+    </div>
+
+    <div class="pt-3 flex flex-col sm:flex-row gap-3">
+      <button type="submit" class="flex-1 bg-indigo-700 text-white py-2.5 px-4 rounded-lg hover:bg-indigo-800 transition font-semibold">Registrar</button>
+      <a href="/movimentacoes" class="inline-flex items-center justify-center px-4 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition text-sm font-medium">Cancelar</a>
+    </div>
+  </form>
+</div>
